@@ -25,11 +25,42 @@ class VigenereCipheringMachine {
     if (arg === false) {
       this.isDirect = false;
     }
+    this.alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
   }
   encrypt(toEncode, keyword) {
     if (!toEncode || !keyword) {
       throw new Error('Incorrect arguments!');
     }
+    let encode = '';
+    let keyWordCounter = 0
+    let inputStr = toEncode.toUpperCase();
+    let keywordStr = keyword.toUpperCase();
+    for (let i = 0; i < inputStr.length; i++) {
+      if (!this.alphabet.includes(inputStr[i])) {
+        encode += inputStr[i];
+      } else {
+        let indexOfNewChar = this.alphabet.indexOf(keywordStr[keyWordCounter])
+
+        let addedChar = '';
+        let shift = this.alphabet.indexOf(inputStr[i]) + indexOfNewChar;
+        console.log(shift);
+        
+        if (shift < this.alphabet.length) {
+          encode += this.alphabet[shift];
+        } else {
+          encode += this.alphabet[shift - this.alphabet.length];
+        }
+
+
+        if (keyWordCounter === keywordStr.length - 1) {
+          keyWordCounter = 0;
+        } else {
+          keyWordCounter++;
+        }
+        
+      }
+    }
+    return encode;
   }
   decrypt(toDecode, keyword) {
     if (!toDecode || !keyword) {
@@ -37,6 +68,10 @@ class VigenereCipheringMachine {
     }
   }
 }
+
+let newObj = new VigenereCipheringMachine()
+newObj.encrypt('attack at dawn!', 'alphonse')
+
 
 module.exports = {
   VigenereCipheringMachine
