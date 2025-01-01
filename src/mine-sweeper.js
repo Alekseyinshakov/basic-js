@@ -23,9 +23,44 @@ const { NotImplementedError } = require('../extensions/index.js');
  *  [1, 1, 1]
  * ]
  */
-function minesweeper(/* matrix */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function minesweeper(matrix) {
+  const resultArr = [];
+  for (let i = 0; i < matrix.length; i++) {
+     resultArr.push([])
+  }
+  for (let i = 0; i < matrix.length; i++) {
+    for (let g = 0; g < matrix[i].length; g++) {
+      
+      
+      let ahtungMinen = 0;
+      if (matrix[i][g + 1] && (matrix[i][g + 1] === true)) {
+        ahtungMinen++;
+      }
+      if (matrix[i][g - 1] && (matrix[i][g - 1] === true)) {
+        ahtungMinen++;
+      }
+      if (matrix[i + 1] && matrix[i + 1][g] && (matrix[i + 1][g] === true)) {
+        ahtungMinen++;
+      }
+      if (matrix[i - 1] && matrix[i - 1][g] && (matrix[i - 1][g] === true)) {
+        ahtungMinen++;
+      }
+      if (matrix[i - 1] && matrix[i - 1][g + 1] && (matrix[i - 1][g + 1] === true)) {
+        ahtungMinen++;
+      }
+      if (matrix[i + 1] && matrix[i + 1][g + 1] && (matrix[i + 1][g + 1] === true)) {
+        ahtungMinen++;
+      }
+      if (matrix[i + 1] && matrix[i + 1][g - 1] && (matrix[i + 1][g - 1] === true)) {
+        ahtungMinen++;
+      }
+      if (matrix[i - 1] && matrix[i - 1][g - 1] && (matrix[i - 1][g - 1] === true)) {
+        ahtungMinen++;
+      }
+      resultArr[i][g] = ahtungMinen;
+    }
+  }
+  return resultArr;
 }
 
 module.exports = {
