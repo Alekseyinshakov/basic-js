@@ -25,6 +25,8 @@ class VigenereCipheringMachine {
     if (arg === false) {
       this.isDirect = false;
     }
+    console.log(this.isDirect);
+    
     this.alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
   }
   encrypt(toEncode, keyword) {
@@ -41,9 +43,7 @@ class VigenereCipheringMachine {
       } else {
         let indexOfNewChar = this.alphabet.indexOf(keywordStr[keyWordCounter])
 
-        let addedChar = '';
         let shift = this.alphabet.indexOf(inputStr[i]) + indexOfNewChar;
-        console.log(shift);
         
         if (shift < this.alphabet.length) {
           encode += this.alphabet[shift];
@@ -60,17 +60,56 @@ class VigenereCipheringMachine {
         
       }
     }
+    
+    if (this.isDirect === false) {
+      return encode.split('').reverse().join('');
+    }
     return encode;
   }
   decrypt(toDecode, keyword) {
     if (!toDecode || !keyword) {
       throw new Error('Incorrect arguments!');
     }
+    let decode = '';
+    let keyWordCounter = 0;
+    let inputStr = toDecode.toUpperCase();
+    let keywordStr = keyword.toUpperCase();
+
+    for (let i = 0; i < inputStr.length; i++) {
+      if (!this.alphabet.includes(inputStr[i])) {
+        decode += inputStr[i];
+      } else {
+        let indexOfNewChar = this.alphabet.indexOf(keywordStr[keyWordCounter])
+
+        let shift = this.alphabet.indexOf(inputStr[i]) - indexOfNewChar;
+        
+        if (shift >= 0) {
+          decode += this.alphabet[shift];
+        } else {
+          decode += this.alphabet[this.alphabet.length - shift * -1];
+        }
+
+
+        if (keyWordCounter === keywordStr.length - 1) {
+          keyWordCounter = 0;
+        } else {
+          keyWordCounter++;
+        }
+        
+      }
+    }
+    
+    if (this.isDirect === false) {
+      return decode.split('').reverse().join('');
+    }
+    return decode;
   }
 }
 
-let newObj = new VigenereCipheringMachine()
-newObj.encrypt('attack at dawn!', 'alphonse')
+let newObj = new VigenereCipheringMachine(false)
+console.log(newObj.decrypt('hello!', 'aaaa'));
+
+
 
 
 module.exports = {
